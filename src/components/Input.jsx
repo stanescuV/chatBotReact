@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Input as ChatInput } from 'react-chat-elements';
-import { MessageBox } from "react-chat-elements";
 
 export function Input() {
   const [inputValue, setInputValue] = useState("");
@@ -12,24 +10,20 @@ export function Input() {
 
   const createOwnMessage = (inputValue) => {
     if (inputValue !== null && inputValue !== "") {
-      let compObject = {
-        "component": <MessageBox
-                        styles={{color: 'black'}}
-                        position={"right"}
-                        type={"text"}
-                        title={"User"}
-                        text={inputValue}/>,
+      let messageObject = {
         "userText": `${inputValue}`
       };
 
-      setMessageArr(prevMessages => [...prevMessages, compObject]);
+      setMessageArr(prevMessages => [...prevMessages, messageObject]);
     }
   };
 
   const displayMessages = (messageArr) => {
-    return messageArr.map((comp, index) => (
-      <div key={index}>
-        {comp.component}
+    return messageArr.map((msg, index) => (
+      <div key={index} style={{textAlign: 'right', margin: '10px 0'}}>
+        <div style={{display: 'inline-block', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '10px'}}>
+          <strong>User:</strong> {msg.userText}
+        </div>
       </div>
     ));
   };
@@ -39,16 +33,26 @@ export function Input() {
     setInputValue("");  // Clear the input field after sending the message
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSendClick();
+    }
+  };
+
   return (
     <div className='input'>
       {messageArr.length > 0 && displayMessages(messageArr)}
-      <ChatInput
-        placeholder="Type here..."
-        multiline={true}
-        value={inputValue}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleSendClick}>Send</button>
+      <div style={{marginTop: '20px'}}>
+        <textarea
+          placeholder="Type here..."
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          style={{width: '100%', padding: '10px', boxSizing: 'border-box'}}
+        />
+        <button onClick={handleSendClick} style={{marginTop: '10px', padding: '10px 20px'}}>Send</button>
+      </div>
     </div>
   );
 }

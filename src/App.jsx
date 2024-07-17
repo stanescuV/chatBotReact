@@ -1,15 +1,13 @@
 // src/App.jsx
 import { useState } from 'react';
 import './App.css';
-import Input from './components/Input';
-import ChatMessage from './components/ChatMessage';
+import MainPage from './pages/MainPage';
 
 function App() {
 
   return (
     <>
-      <ChatMessage></ChatMessage>
-      <Input />
+      <MainPage/>
     </>
   );
 }

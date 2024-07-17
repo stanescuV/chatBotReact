@@ -1,8 +1,15 @@
 import React from 'react'
+import Input from '../components/Input';
+import ChatMessage from '../components/ChatMessage';
+import "./mainPage.css"
+
 
 function MainPage() {
   return (
-    <div>MainPage</div>
+    <div className='main-page' >
+        <ChatMessage/>
+        <Input />
+    </div>
   )
 }
 
