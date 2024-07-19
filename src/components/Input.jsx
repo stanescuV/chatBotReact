@@ -4,6 +4,15 @@ export function Input() {
   const [inputValue, setInputValue] = useState("");
   const [messageArr, setMessageArr] = useState([]);
   
+  const sendInputServer = (inputValue) =>{
+    fetch(`http://localhost:3000/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json",
+      },
+      body: JSON.stringify({ message: inputValue })
+    })
+  }
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -30,6 +39,7 @@ export function Input() {
 
   const handleSendClick = () => {
     createOwnMessage(inputValue);
+    sendInputServer(inputValue);
     setInputValue("");  // Clear the input field after sending the message
   };
 
