@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { MessageBox } from 'react-chat-elements';
 
 export function Input() {
   const [inputValue, setInputValue] = useState("");
   const [messageArr, setMessageArr] = useState([]);
+  const [messageChatBot, setMessageChatBot] = useState("")
   
   const sendInputServer = (inputValue) =>{
     fetch(`http://localhost:3000/query`, {
@@ -11,8 +13,26 @@ export function Input() {
         "Content-Type":"application/json",
       },
       body: JSON.stringify({ message: inputValue })
-    })
+    }).then((res => res.json()))
+    .then(res => createOwnMessageBox(res.message))
   }
+
+ 
+  const createOwnMessageBox = (inputValue) => {
+    if (inputValue !== null && inputValue !== "") {
+      let compObject = {
+        "component": <MessageBox
+                        styles={{color: 'black', maxWidth:"200px"}}
+                        position={"left"}
+                        type={"text"}
+                        title={"User"}
+                        text={inputValue}/>,
+        "userText": ""
+      };
+
+      setMessageArr(prevMessages => [...prevMessages, compObject]);
+    }
+  };
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -28,13 +48,20 @@ export function Input() {
   };
 
   const displayMessages = (messageArr) => {
-    return messageArr.map((msg, index) => (
-      <div key={index} style={{textAlign: 'right', margin: '10px 0'}}>
-        <div style={{display: 'inline-block', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '10px'}}>
-          <strong>User:</strong> {msg.userText}
+    return messageArr.map((msg, index) => {
+
+      if(msg.userText !== ""){
+        return(
+        <div key={index} style={{textAlign: 'right', margin: '10px 0'}}>
+          <div style={{display: 'inline-block', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '10px'}}>
+            <strong>User:</strong> {msg.userText}
+          </div>
         </div>
-      </div>
-    ));
+      )
+    }
+    return(msg.component)
+  }
+  );
   };
 
   const handleSendClick = () => {
