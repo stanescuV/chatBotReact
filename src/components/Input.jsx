@@ -7,7 +7,7 @@ export function Input() {
   const [messageChatBot, setMessageChatBot] = useState("")
   
   const sendInputServer = (inputValue) =>{
-    fetch(`http://localhost:3000/query`, {
+    fetch(`http://localhost:3002/query`, {
       method: "POST",
       headers: {
         "Content-Type":"application/json",
