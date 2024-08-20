@@ -7,7 +7,7 @@ export function Input() {
   const [messageChatBot, setMessageChatBot] = useState("")
   
   const sendInputServer = (inputValue) =>{
-    fetch(`http://api.amfacutoboacana.com/query`, {
+    fetch(`https://api.amfacutoboacana.com/query`, {
       method: "POST",
       headers: {
         "Content-Type":"application/json",
